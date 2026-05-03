@@ -30,17 +30,26 @@ export default class Base extends BaseReqs {
         <p>Text text text !</p>
 
         <label><input type="checkbox"/> Checkbox <P.Check/></label>
+        <label><input type="checkbox" checked/> Checkbox on</label>
+        <label><input type="checkbox" e-variant="switch"/> Switch</label>
+        <label><input type="checkbox" e-variant="switch" checked/> Switch on</label>
 
-        <e-flex column gap wrap>
+        <e-flex gap wrap nowrap>
           {(Object.keys(theme.colors).filter(color => !["bg", "text", "tint"].includes(color)) as (keyof typeof theme.colors)[]).map(color =>
-            <e-flex gap class={theme.colors[color].as_tint}>
+            <e-flex column gap class={theme.colors[color].as_tint}>
+              <span>{color}</span>
+              <button>Normal</button>
               <button e-variant="text">text</button>
               <button e-variant="tint">tint <P.Heart/></button>
               <button e-variant="full">full <P.Heart/></button>
+              <button disabled>disabled <P.Heart/></button>
               <button disabled e-variant="text">disabled text <P.Heart/></button>
               <button disabled e-variant="tint">disabled tint <P.Heart/></button>
               <button disabled e-variant="full">disabled full <P.Heart/></button>
-              <span>{color}</span>
+              <label><input type="checkbox"/> Checkbox <P.Check/></label>
+              <label><input type="checkbox" checked/> Checkbox on</label>
+              <label><input type="checkbox" e-variant="switch"/> Switch</label>
+              <label><input type="checkbox" e-variant="switch" checked/> Switch on</label>
             </e-flex>
           )}
         </e-flex>
@@ -53,7 +62,7 @@ export default class Base extends BaseReqs {
           <button e-variant="tint"><P.CaretDown/></button>
         </e-box>
 
-        <e-flex gap>
+        <e-flex gap wrap>
           <e-box>
             <input type="text" placeholder="Enter your text" />
             <button><P.X/></button>
@@ -66,7 +75,7 @@ export default class Base extends BaseReqs {
         </e-flex>
 
         <h3>Native date/time pickers</h3>
-        <e-flex gap>
+        <e-flex gap wrap>
           <e-box>
             <input type="date" />
           </e-box>
@@ -82,7 +91,7 @@ export default class Base extends BaseReqs {
 
         <h3>elt-ui date pickers</h3>
 
-        <e-flex gap>
+        <e-flex gap wrap>
           <DatePicker/>
           <TimePicker/>
           <DateTimePicker/>
