@@ -1,7 +1,8 @@
-import { App, css, view } from "elt"
-import { theme, cls_button_tint, cls_button_full } from "elt/ui";
+import { $scrollable, App, css, o, view } from "elt"
+import { DatePicker, DateTimePicker, Select, theme, TimePicker, uicss as ui } from "elt/ui";
 
 import * as P from "elt-phosphor"
+import * as D from "elt-phosphor/duotone"
 
 const BaseReqs = App.Service.factory(async (srv) => {
     return { }
@@ -12,25 +13,91 @@ export default class Base extends BaseReqs {
   @view
   Main() {
     return <e-flex column class={cls_fullscreen}>
-      <header class={[cls_header, theme.colors.tint.as_light_background]}>
+      <header class={[cls_header, theme.class_light, theme.colors.blue.as_background]}>
         <nav>
-          <button>Widgets <P.PhTable/></button>
-          <button>Help <P.PhQuestion/></button>
+          <button>Widgets <P.Table/></button>
+          <button>Help <P.Question/></button>
         </nav>
       </header>
-      <e-flex pad gap column>
+      <e-flex pad gap column grow style={{width: "100%"}}>
+        {$scrollable}
         {this.srv.DisplayView("Content")}
-        <p>Hello <button class={cls_button_tint}>Click me</button> <button class={cls_button_full}>Click me</button><br/>How's it going ? <button class={cls_button_tint}>Click me</button> <button class={cls_button_full}>Click me</button></p>
+        <p>
+          Hello <button e-variant="tint">Click me</button> <button e-variant="full">Click me</button><br/>How's it going ? <button e-variant="tint">Click me</button> <button e-variant="full">Click me</button><br/>
+          Text and more text<br/>
+          And going to the next line.
+        </p>
+        <p>Text text text !</p>
 
+        <label><input type="checkbox"/> Checkbox <P.Check/></label>
 
-        <e-flex gap wrap>
-          {(["red", "red_orange", "orange", "yellow", "yellow_green", "green", "cyan_green", "cyan", "blue", "blue_purple", "purple", "magenta"] as const).map(color =>
-            <button class={[theme.colors[color].as_tint, cls_button_full]}>Click me <P.PhHeart/></button>
+        <e-flex column gap wrap>
+          {(Object.keys(theme.colors).filter(color => !["bg", "text", "tint"].includes(color)) as (keyof typeof theme.colors)[]).map(color =>
+            <e-flex gap class={theme.colors[color].as_tint}>
+              <button e-variant="text">text</button>
+              <button e-variant="tint">tint <P.Heart/></button>
+              <button e-variant="full">full <P.Heart/></button>
+              <button disabled e-variant="text">disabled text <P.Heart/></button>
+              <button disabled e-variant="tint">disabled tint <P.Heart/></button>
+              <button disabled e-variant="full">disabled full <P.Heart/></button>
+              <span>{color}</span>
+            </e-flex>
           )}
         </e-flex>
-        <button class={[theme.colors.red.as_tint, cls_button_full]}>Click me <P.PhHeart/></button>
-        <button class={[theme.colors.green.as_tint, cls_button_full]}>Click me <P.PhAcornDuotone/></button>
+
+        <button disabled class={[theme.colors.red]}>Click me <P.Heart/></button>
+        <button class={[theme.colors.green.as_background]}>Click me <D.Acorn/></button>
+
+        <e-box>
+          <button e-variant="tint">Button</button>
+          <button e-variant="tint"><P.CaretDown/></button>
+        </e-box>
+
+        <e-flex gap>
+          <e-box>
+            <input type="text" placeholder="Enter your text" />
+            <button><P.X/></button>
+          </e-box>
+          <e-box>
+            <input e-variant="tint" type="text" placeholder="Enter your text" />
+            <button e-variant="tint"><P.X/></button>
+          </e-box>
+
+        </e-flex>
+
+        <h3>Native date/time pickers</h3>
+        <e-flex gap>
+          <e-box>
+            <input type="date" />
+          </e-box>
+
+          <e-box>
+            <input type="time" />
+          </e-box>
+
+          <e-box>
+            <input type="datetime-local" />
+          </e-box>
+        </e-flex>
+
+        <h3>elt-ui date pickers</h3>
+
+        <e-flex gap>
+          <DatePicker/>
+          <TimePicker/>
+          <DateTimePicker/>
+        </e-flex>
+
+        <button e-variant="text">Text button</button>
+
+        <Select
+          options={["Option 1", "Option 2", "Option 3"]}
+          model={o("Option 1")}
+        />
+
+
       </e-flex>
+
     </e-flex>
   }
 
