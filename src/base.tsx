@@ -1,4 +1,4 @@
-import { $scrollable, App, css, o, view } from "elt"
+import { $click, $scrollable, App, css, o, view } from "elt"
 import { DatePicker, DateTimePicker, Select, theme, TimePicker, uicss as ui } from "elt/ui";
 
 import * as P from "elt-phosphor"
@@ -34,11 +34,24 @@ export default class Base extends BaseReqs {
         <label><input type="checkbox" e-variant="switch"/> Switch</label>
         <label><input type="checkbox" e-variant="switch" checked/> Switch on</label>
 
-        <e-flex gap wrap nowrap>
-          {(Object.keys(theme.colors).filter(color => !["bg", "text", "tint"].includes(color)) as (keyof typeof theme.colors)[]).map(color =>
-            <e-flex column gap class={theme.colors[color].as_tint}>
+        <e-flex gap wrap>
+
+          {(Object.keys(theme.colors).filter(color => !["bg", "text", "tint"].includes(color)) as (keyof typeof theme.colors)[]).map(color => {
+            const o_toggle = o(false)
+            const o_toggle2 = o_toggle.tf(t => !t)
+            return <e-flex column gap class={theme.colors[color].as_tint}>
               <span>{color}</span>
               <button>Normal</button>
+              <e-box>
+                <button e-variant={o_toggle.tf(val => val ? "on" : "off")}>
+                  {$click(() => o_toggle.set(!o_toggle.get()))}
+                  {o_toggle.tf(val => val ? "On" : "Off")} <P.Power/>
+                </button>
+                <button e-variant={o_toggle2.tf(val => val ? "on" : "off")}>
+                  {$click(() => o_toggle.set(!o_toggle.get()))}
+                  {o_toggle2.tf(val => val ? "On" : "Off")} <P.Power/>
+                </button>
+              </e-box>
               <button e-variant="text">text</button>
               <button e-variant="tint">tint <P.Heart/></button>
               <button e-variant="full">full <P.Heart/></button>
@@ -51,7 +64,7 @@ export default class Base extends BaseReqs {
               <label><input type="checkbox" e-variant="switch"/> Switch</label>
               <label><input type="checkbox" e-variant="switch" checked/> Switch on</label>
             </e-flex>
-          )}
+        })}
         </e-flex>
 
         <button disabled class={[theme.colors.red]}>Click me <P.Heart/></button>
