@@ -1,5 +1,5 @@
-import { $click, $scrollable, App, css, o, view } from "elt"
-import { DatePicker, DateTimePicker, Select, theme, TimePicker, uicss as ui } from "elt/ui";
+import { $bind, $scrollable, App, css, o, view } from "elt"
+import { DatePicker, DateTimePicker, Select, theme, TimePicker } from "elt/ui";
 
 import * as P from "elt-phosphor"
 import * as D from "elt-phosphor/duotone"
@@ -8,13 +8,27 @@ const BaseReqs = App.Service.factory(async (srv) => {
     return { }
 })
 
+function tf_set(value: string): o.Converter<string, boolean> {
+  return {
+    transform(val: string) {
+      return val === value
+    },
+    revert(newv, _, val) {
+      return newv ? value : val
+    }
+  }
+}
+
 export default class Base extends BaseReqs {
+
+  o_font = o("Segoe UI")
 
   @view
   Main() {
-    return <e-flex column class={cls_fullscreen}>
+    return <e-flex column class={cls_fullscreen} style={{fontFamily: this.o_font}}>
       <header class={[cls_header, theme.class_light, theme.colors.blue.as_background]}>
         <nav>
+          <button>𝑒</button>
           <button>Widgets <P.Table/></button>
           <button>Help <P.Question/></button>
         </nav>
@@ -22,6 +36,16 @@ export default class Base extends BaseReqs {
       <e-flex pad gap column grow style={{width: "100%"}}>
         {$scrollable}
         {this.srv.DisplayView("Content")}
+        <h3>Font</h3>
+        <e-box>
+          <button>{$bind.toggler(this.o_font.tf(tf_set("SF Pro")))}SF Pro <P.AppleLogo/></button>
+          <button>{$bind.toggler(this.o_font.tf(tf_set("Inter")))}Inter <P.LinuxLogo/></button>
+          <button>{$bind.toggler(this.o_font.tf(tf_set("Noto Sans")))}Noto Sans <P.GoogleLogo/></button>
+          <button>{$bind.toggler(this.o_font.tf(tf_set("Segoe UI")))}Segoe UI <P.WindowsLogo/></button>
+          <button>{$bind.toggler(this.o_font.tf(tf_set("Ubuntu")))}Ubuntu <P.LinuxLogo/></button>
+          <button>{$bind.toggler(this.o_font.tf(tf_set("Roboto")))}Roboto <P.AndroidLogo/></button>
+        </e-box>
+
         <p>
           Hello <button e-variant="tint">Click me</button> <button e-variant="full">Click me</button><br/>How's it going ? <button e-variant="tint">Click me</button> <button e-variant="full">Click me</button><br/>
           Text and more text<br/>
@@ -29,8 +53,8 @@ export default class Base extends BaseReqs {
         </p>
         <p>Text text text !</p>
 
-        <label><input type="checkbox"/> Checkbox <P.Check/></label>
-        <label><input type="checkbox" checked/> Checkbox on</label>
+        <label><input type="checkbox"/> Unchecked</label>
+        <label><input type="checkbox" checked/> Checked</label>
         <label><input type="checkbox" e-variant="switch"/> Switch</label>
         <label><input type="checkbox" e-variant="switch" checked/> Switch on</label>
 
@@ -38,18 +62,18 @@ export default class Base extends BaseReqs {
 
           {(Object.keys(theme.colors).filter(color => !["bg", "text", "tint"].includes(color)) as (keyof typeof theme.colors)[]).map(color => {
             const o_toggle = o(false)
-            const o_toggle2 = o_toggle.tf(t => !t)
+            const o_toggle2 = o(true)
             return <e-flex column gap class={theme.colors[color].as_tint}>
               <span>{color}</span>
               <button>Normal</button>
-              <e-box>
-                <button e-variant={o_toggle.tf(val => val ? "on" : "off")}>
-                  {$click(() => o_toggle.set(!o_toggle.get()))}
-                  {o_toggle.tf(val => val ? "On" : "Off")} <P.Power/>
+              <e-box variant="vertical">
+                <button>
+                  {$bind.toggler(o_toggle)}
+                  Off <P.Power/>
                 </button>
-                <button e-variant={o_toggle2.tf(val => val ? "on" : "off")}>
-                  {$click(() => o_toggle.set(!o_toggle.get()))}
-                  {o_toggle2.tf(val => val ? "On" : "Off")} <P.Power/>
+                <button>
+                  {$bind.toggler(o_toggle2)}
+                  On <P.Power/>
                 </button>
               </e-box>
               <button e-variant="text">text</button>
@@ -60,7 +84,7 @@ export default class Base extends BaseReqs {
               <button disabled e-variant="tint">disabled tint <P.Heart/></button>
               <button disabled e-variant="full">disabled full <P.Heart/></button>
               <label><input type="checkbox"/> Checkbox <P.Check/></label>
-              <label><input type="checkbox" checked/> Checkbox on</label>
+              <label><input type="checkbox" checked/> Checked</label>
               <label><input type="checkbox" e-variant="switch"/> Switch</label>
               <label><input type="checkbox" e-variant="switch" checked/> Switch on</label>
             </e-flex>
