@@ -38,12 +38,9 @@ export default class Base extends BaseReqs {
         {this.srv.DisplayView("Content")}
         <h3>Font</h3>
         <e-box>
-          <button>{$bind.toggler(this.o_font.tf(tf_set("SF Pro")))}SF Pro <P.AppleLogo/></button>
-          <button>{$bind.toggler(this.o_font.tf(tf_set("Inter")))}Inter <P.LinuxLogo/></button>
-          <button>{$bind.toggler(this.o_font.tf(tf_set("Noto Sans")))}Noto Sans <P.GoogleLogo/></button>
-          <button>{$bind.toggler(this.o_font.tf(tf_set("Segoe UI")))}Segoe UI <P.WindowsLogo/></button>
-          <button>{$bind.toggler(this.o_font.tf(tf_set("Ubuntu")))}Ubuntu <P.LinuxLogo/></button>
-          <button>{$bind.toggler(this.o_font.tf(tf_set("Roboto")))}Roboto <P.AndroidLogo/></button>
+          {[{font: "system-ui", icon: P.ComputerTower}, {font: "SF Pro", icon: P.AppleLogo}, {font: "Inter", icon: P.LinuxLogo}, {font: "Noto Sans", icon: P.GoogleLogo}, {font: "Segoe UI", icon: P.WindowsLogo}, {font: "Ubuntu", icon: P.LinuxLogo}, {font: "Roboto", icon: P.AndroidLogo}].map(({font, icon}) => {
+            return <button style={{fontFamily: font}}>{$bind.toggler(this.o_font.tf(tf_set(font)))} {font} {icon()}</button>
+          })}
         </e-box>
 
         <p>
